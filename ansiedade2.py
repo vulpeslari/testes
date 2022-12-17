@@ -58,6 +58,7 @@ def create_bricks(x, color):
     bricks_copy.clone()
     bricks_copy.setx(x - 45)
     position_brick.append(bricks_copy.position())
+    brick_lane.append(bricks_copy)
     return bricks_copy
 
 
@@ -74,13 +75,11 @@ for i in range(8):
         color = color_list[cont_color]
     for j in range(13):
         create_bricks(x, color)
-        brick_lane.append(bricks)
         x -= 45
     y -= 12
 
 print(position_brick)
 print(len(position_brick))
-print(position_brick[0][0])
 print(brick_lane)
 
 # draw ball
@@ -175,9 +174,12 @@ while True:
             position_x = position_brick[i][0]
             position_y = position_brick[i][1]
             if ball.ycor() == position_y and position_x + 26 > ball.xcor() > position_x - 26:
-                ball.sety(position_y)
-                ball.dy *= -1
-                break
+                for brick in brick_lane:
+                    ball.sety(position_y - 10)
+                    ball.dy *= -1
+                    brick.goto(1000, 1000)
+                    brick_lane.remove(brick)
+
 
     # collision with the paddle
     if ball.ycor() < -290 and paddle_1.xcor() + 10 > ball.xcor() > paddle_1.xcor() - 10:
