@@ -48,35 +48,35 @@ bricks = turtle.Turtle()
 color_list = ["red", "orange", "green", "yellow"]
 
 
-def create_bricks(x, color):
+def create_bricks(dye):
     bricks.penup()
     bricks_copy = bricks.clone()
-    bricks_copy.setpos(x, y)
     bricks_copy.shape("square")
     bricks_copy.shapesize(stretch_wid=0.4, stretch_len=2)
-    bricks_copy.color(color)
-    bricks_copy.clone()
-    bricks_copy.setx(x - 45)
+    bricks_copy.color(dye)
+    bricks_copy.penup()
+    bricks_copy.goto(j, i)
     position_brick.append(bricks_copy.position())
     brick_lane.append(bricks_copy)
-    return bricks_copy
 
 
-y = 200
-cont_color = 0
 brick_lane = []
-for i in range(8):
-    x = 315
+y_cor = [200, 188, 176, 164, 152, 140, 128, 116]
+x_cor = [315, 270, 225, 180, 135, 90, 45, 0, -45, -90, -135, -180, -225, -270]
+
+for i in y_cor:
     color = ""
-    if i % 2 != 0:
-        cont_color += 1
-        color = color_list[cont_color - 1]
-    else:
-        color = color_list[cont_color]
-    for j in range(13):
-        create_bricks(x, color)
-        x -= 45
-    y -= 12
+    if i == 200 or i == 188:
+        color = color_list[0]
+    elif i == 176 or i == 164:
+        color = color_list[1]
+    elif i == 152 or i == 140:
+        color = color_list[2]
+    elif i == 128 or i == 116:
+        color = color_list[3]
+    for j in x_cor:
+        create_bricks(color)
+
 
 print(position_brick)
 print(len(position_brick))
@@ -168,18 +168,19 @@ while True:
         score_point()
 
 
-    # collision with the brick
-    if ball.ycor() > position_brick[-1][0] - 5:
-        for i in range(len(position_brick)):
-            position_x = position_brick[i][0]
-            position_y = position_brick[i][1]
-            if ball.ycor() == position_y and position_x + 26 > ball.xcor() > position_x - 26:
-                for brick in brick_lane:
-                    ball.sety(position_y - 10)
-                    ball.dy *= -1
-                    brick.goto(1000, 1000)
-                    brick_lane.remove(brick)
+    def brick_hit():
+        ball.sety(position_y - 10)
+        ball.dy *= -1
+        brick.goto(1000, 1000)
+        brick_lane.remove(brick)
+        return
 
+    # collision with the brick
+    for brick in brick_lane:
+        position_x = brick.xcor()
+        position_y = brick.ycor()
+        if ball.ycor() == position_y and position_x + 26 > ball.xcor() > position_x - 26:
+            brick_hit()
 
     # collision with the paddle
     if ball.ycor() < -290 and paddle_1.xcor() + 10 > ball.xcor() > paddle_1.xcor() - 10:
