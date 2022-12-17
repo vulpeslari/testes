@@ -4,7 +4,7 @@ import turtle
 screen = turtle.Screen()
 screen.title("Blackout")
 screen.bgcolor("black")
-screen.setup(width=630, height=945)
+screen.setup(width=400, height=600)
 screen.tracer(0)
 # positions of each brick from wall
 position_brick = []
@@ -15,26 +15,16 @@ window.shape("square")
 window.width(5)
 window.color("white")
 window.penup()
-window.setpos(-395, 590)
+window.setpos(-295, 490)
 window.pendown()
 window.rt(90)
 window.fd(1180)
 window.lt(90)
 window.color("blue")
-window.goto(390, -590)
+window.goto(340, -490)
 window.color("white")
 window.lt(90)
 window.fd(1180)
-window.setpos(-390, 560)
-window.begin_fill()
-window.rt(90)
-window.fd(780)
-window.lt(90)
-window.fd(100)
-window.lt(90)
-window.fd(780)
-window.lt(100)
-window.end_fill()
 window.penup()
 window.hideturtle()
 
@@ -44,14 +34,14 @@ def draw_paddle(paddle, y, x, dye):
     paddle.speed(0)
     paddle.shape("square")
     paddle.color(dye)
-    paddle.shapesize(stretch_wid=0.5, stretch_len=2.5)
+    paddle.shapesize(stretch_wid=0.4, stretch_len=2)
     paddle.penup()
     paddle.goto(x, y)
 
 
 # draw paddle
 paddle_1 = turtle.Turtle()
-draw_paddle(paddle_1, -315, 0, 'white')
+draw_paddle(paddle_1, -300, 0, 'blue')
 
 # draw bricks
 bricks = turtle.Turtle()
@@ -63,18 +53,19 @@ def create_bricks(x, color):
     bricks_copy = bricks.clone()
     bricks_copy.setpos(x, y)
     bricks_copy.shape("square")
-    bricks_copy.shapesize(stretch_wid=0.5, stretch_len=2.5)
+    bricks_copy.shapesize(stretch_wid=0.4, stretch_len=2)
     bricks_copy.color(color)
     bricks_copy.clone()
-    bricks_copy.setx(x - 55)
+    bricks_copy.setx(x - 45)
     position_brick.append(bricks_copy.position())
     return bricks_copy
 
 
-y = 300
+y = 200
 cont_color = 0
+brick_lane = []
 for i in range(8):
-    x = 355
+    x = 315
     color = ""
     if i % 2 != 0:
         cont_color += 1
@@ -83,11 +74,14 @@ for i in range(8):
         color = color_list[cont_color]
     for j in range(13):
         create_bricks(x, color)
-        x -= 55
-    y -= 15
+        brick_lane.append(bricks)
+        x -= 45
+    y -= 12
+
 print(position_brick)
 print(len(position_brick))
 print(position_brick[0][0])
+print(brick_lane)
 
 # draw ball
 ball = turtle.Turtle()
@@ -123,16 +117,16 @@ def head(hud, x, y):
 
 
 hud_left = turtle.Turtle()
-head(hud_left, -200, 350)
+head(hud_left, -180, 250)
 
 hud_right = turtle.Turtle()
-head(hud_right, 200, 350)
+head(hud_right, 220, 250)
 
 
 def paddle_right(paddle):
     x = paddle.xcor()
     if x < 315:
-        x += 50
+        x += 25
     else:
         x = 315
     return paddle.setx(x)
@@ -140,10 +134,10 @@ def paddle_right(paddle):
 
 def paddle_left(paddle):
     x = paddle.xcor()
-    if x > -315:
-        x -= 50
+    if x > -270:
+        x -= 25
     else:
-        x = -315
+        x = -270
     return paddle.setx(x)
 
 
@@ -159,20 +153,21 @@ while True:
     ball.sety(ball.ycor() + ball.dy)
     ball.setx(ball.xcor() + ball.dx)
 
-    # collision with the left wall
-    if ball.xcor() > 315:
-        ball.setx(315)
+    # collision with the right wall
+    if ball.xcor() > 335:
+        ball.setx(335)
         ball.dx *= -1
 
-    # collision with right wall
-    if ball.xcor() < -315:
-        ball.setx(-315)
+    # collision with left wall
+    if ball.xcor() < -280:
+        ball.setx(-280)
         ball.dx *= -1
 
     # collision with lower wall
-    if ball.ycor() < -470:
+    if ball.ycor() < -370:
         score += 1
         score_point()
+
 
     # collision with the brick
     if ball.ycor() > position_brick[-1][0] - 5:
@@ -184,7 +179,7 @@ while True:
                 ball.dy *= -1
                 break
 
-    # collision with the paddle 1
-    if ball.ycor() < -310 and paddle_1.xcor() + 10 > ball.xcor() > paddle_1.xcor() - 10:
-        ball.sety(-300)
+    # collision with the paddle
+    if ball.ycor() < -290 and paddle_1.xcor() + 10 > ball.xcor() > paddle_1.xcor() - 10:
+        ball.sety(-290)
         ball.dy *= -1
