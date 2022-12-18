@@ -195,6 +195,7 @@ while game_start:
             ball.setheading(180 - ball.heading())
         elif 180 <= ball.heading() < 360:
             ball.setheading(540 - ball.heading())
+           #testar melhor esses valores dps
 
     # collision with the right wall
     if ball.xcor() > 335:
