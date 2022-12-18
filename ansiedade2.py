@@ -195,7 +195,7 @@ while game_start:
             ball.setheading(180 - ball.heading())
         elif 180 <= ball.heading() < 360:
             ball.setheading(540 - ball.heading())
-           #testar melhor esses valores dps
+
 
     # collision with the right wall
     if ball.xcor() > 335:
@@ -213,9 +213,18 @@ while game_start:
     if ball.ycor() < -370:
         score_death += 1
         score_point(hud_death, score_death)
+        ball.dy = -1
+        ball.dx = -1
         if score_death > 4:
             time.sleep(5)
             screen.update()
+            score_death = 0
+
+    # collision with the upper wall
+    if ball.ycor() > 435:
+        ball.sety(425)
+        ball.dy *= -1
+        bounce("top")
 
 
     def brick_hit():
@@ -228,18 +237,24 @@ while game_start:
 
 
     # collision with the brick
+    count_brick = 0
     for brick in brick_lane:
         position_x = brick.xcor()
         position_y = brick.ycor()
         if ball.ycor() == position_y and position_x + 26 > ball.xcor() > position_x - 26:
             brick_hit()
+            count_brick += 1
             if position_y == 200 or position_y == 188:
                 score += 7
                 score_point(hud_left, score)
+                ball.dx *= -5
+                ball.dy *= -5
                 paddle_1.shapesize(stretch_wid=0.4, stretch_len=1)
             elif position_y == 176 or position_y == 164:
                 score += 5
                 score_point(hud_left, score)
+                ball.dx *= -4
+                ball.dy *= -4
                 paddle_1.shapesize(stretch_wid=0.4, stretch_len=1.5)
             elif position_y == 152 or position_y == 140:
                 score += 3
@@ -248,8 +263,16 @@ while game_start:
                 score += 1
                 score_point(hud_left, score)
 
+    # ball speed
+    if count_brick >= 4:
+        ball.dy *= -2
+        ball.dx *= -2
+    if count_brick >= 12:
+        ball.dy *= -3
+        ball.dx *= -3
+
     # collision with the paddle
-    if ball.ycor() < -285 and paddle_1.xcor() + 10 > ball.xcor() > paddle_1.xcor() - 10:
+    if ball.ycor() < -285 and paddle_1.xcor() + 15 > ball.xcor() > paddle_1.xcor() - 15:
         ball.sety(-285)
         ball.dy *= -1
         bounce("paddle")
