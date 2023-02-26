@@ -1,5 +1,5 @@
 from config import *
-from collision import  detection_collision
+from collision import detection_collision
 import math
 
 
@@ -49,13 +49,12 @@ class Ball:
         self.rect = pygame.Rect(self.x, self.y, 50, 50)
         if not detection_collision(self.rect):
             self.dy *= -1
-            self.y = self.y + self.dy
+            self.y = self.y + self.dy*2
             rect = pygame.Rect(self.x, self.y, 50, 50)
             if not detection_collision(rect):
                 self.dx *= -1
                 self.dy *= -1
-                self.x = self.x + self.dx
-                print(self.dx, self.dy)
+                self.x = self.x + self.dx*2
             self.per = False
         else:
             self.per = True

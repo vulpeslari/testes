@@ -1,9 +1,11 @@
 import pygame.mixer
-
+from collision import collision_ball
 from tank import Tank
 from config import *
 from score import Score
 from ball import Ball
+import math
+
 pygame.init()
 
 
@@ -18,11 +20,11 @@ class Game:
         self.player2_rect = pygame.Rect(1120, 363, 80, 80)
         self.score_a = self.score_b = 0
         self.bullets = []
-        self.tank_1 = Tank(0, 90, self.player1_rect, "sprites/nave-1.png", RED)
-        self.tank_2 = Tank(180, -90, self.player2_rect, "sprites/nave-2.png", BLUE)
+        self.tank_1 = Tank(0, self.player1_rect, "sprites/nave-1.png", RED)
+        self.tank_2 = Tank(180, self.player2_rect, "sprites/nave-2.png", BLUE)
 
     def run(self):
-        self.clock.tick(80)
+        self.clock.tick(100)
 
         score_1 = Score(self.score_a, 300, RED)
         score_2 = Score(self.score_b, 980, BLUE)
@@ -34,9 +36,9 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.game_loop = False
-                    if event.key == pygame.K_q and len(self.bullets) == 0:
+                    if event.key == pygame.K_s and len(self.bullets) == 0:
                         self.bullets.append(self.tank_1.shot_bullet())
-                    if event.key == pygame.K_e and len(self.bullets) == 0:
+                    if event.key == pygame.K_DOWN and len(self.bullets) == 0:
                         self.bullets.append(self.tank_2.shot_bullet())
             keys = pygame.key.get_pressed()
 
@@ -47,6 +49,13 @@ class Game:
             self.tank_2.control(keys, [pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT], 1)
             self.tank_2.draw()
 
+            if collision_ball(self.tank_1.rect, ball.get_rect(), self.tank_1.ang):
+                ball.dx += math.cos(math.radians(self.tank_1.ang))
+                ball.dy -= math.sin(math.radians(self.tank_1.ang))
+
+            if collision_ball(self.tank_2.rect, ball.get_rect(), self.tank_2.ang):
+                ball.dx += math.cos(math.radians(self.tank_2.ang))
+                ball.dy -= math.sin(math.radians(self.tank_2.ang))
             # start shot
             for b in self.bullets:
                 b.move()

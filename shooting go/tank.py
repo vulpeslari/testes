@@ -6,10 +6,8 @@ from collision import tank1_collision_objects, tank2_collision_objects
 
 
 class Tank:
-    def __init__(self, ang,ang_mov, rect, image, color_bullet):
+    def __init__(self, ang, rect, image, color_bullet):
         self.ang = ang
-        self.ang_original = ang
-        self.ang_mov = ang_mov
         self.w = rect.w
         self.h = rect.h
         self.coordinates = [rect.x, rect.y]
@@ -54,25 +52,3 @@ class Tank:
         self.rotated = pygame.transform.rotate(self.surface, self.ang)
         self.rect = self.rotated.get_rect(center=(self.coordinates[0] + 25, self.coordinates[1] + 25))
         screen.blit(self.rotated, self.rect)
-
-    def player_death(self, ball):
-        ball, count_ball, color_bullet = ball[0], ball[1], ball[2]
-
-        if ball.colliderect(self.rect) and color_bullet != self.color_bullet:
-            self.count += 1
-            count_ball += touch_limit
-            ang = 1
-            self.ang = 0
-            death_count = 0
-            while death_count <= 720:
-                if death_count == 720:
-                    if self.count % 2 == 0 and self.count != 0:
-                        self.coordinates[1] = 100
-                    elif self.count % 2 == 1 and self.count != 0:
-                        self.coordinates[1] = 650
-
-                death_count += 1
-                self.ang += ang
-
-            return True
-        return False

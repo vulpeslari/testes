@@ -17,6 +17,7 @@ ang_right = 0
 
 num_arena = 1
 arena = Arena(num_arena, screen)
+
 touch_limit = 4
 bullet_limit = 3
 speed_ball = 5
