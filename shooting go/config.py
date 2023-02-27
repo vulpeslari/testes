@@ -1,16 +1,23 @@
 import pygame
 from arena import Arena
+
+pygame.init()
+pygame.mixer.init()
+
 pygame.font.init()
 
 sc_width = 1300
 sc_height = 750
-screen = pygame.display.set_mode((sc_width, sc_height), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((sc_width, sc_height))
 
 green = (0, 255, 0)
 blue = (0, 0, 255)
 
 RED = (255, 0, 0)
 BLUE = (0, 255, 0)
+
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
 ang_left = 0
 ang_right = 0
