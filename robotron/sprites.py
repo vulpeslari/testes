@@ -12,6 +12,13 @@ girl = []
 for i in range(1, 13):
     girl.append(pygame.image.load(f"girl/girl-{i}.png"))
 
+spheroids_s = []
+for i in range(1, 8):
+    spheroids_s.append(pygame.image.load(f"esferoides/sprite_{i}.png"))
+
+enforcers_s = []
+for i in range(1, 10):
+    enforcers_s.append(pygame.image.load(f"enforcers/sprites_{i}.png"))
 kid = []
 for i in range(1, 13):
     kid.append(pygame.image.load(f"kid/kid-{i}.png"))

@@ -4,6 +4,7 @@ from human import Human
 from hulks import Hulks
 from grunts import Grunts
 from sprites import *
+from spheroids import Spheroids
 import random
 
 game_loop = True
@@ -19,7 +20,8 @@ create = True
 list_grunts = []
 list_hulks = []
 list_family = []
-
+list_spheroids = []
+list_enforcers = []
 lista = positions.copy()
 bullets = []
 time = 0
@@ -55,30 +57,39 @@ while game_loop:
     if create:
         for i in range(5):
             a = random.choice(lista)
-            hulks = Hulks(a, screen, hulks_s, 40)
-            lista.remove(a)
-            list_hulks.append(hulks)
-        for i in range(5):
-            a = random.choice(lista)
+            spheroid = Spheroids(a, screen, spheroids_s, 40)
             grunts = Grunts(a, screen, grunts_s, 40)
+            hulks = Hulks(a, screen, hulks_s, 40)
+            family = Hulks(a, screen, random.choice([boy_s, girl, kid]),40)
             lista.remove(a)
-            list_grunts.append(grunts)
-        for i in range(3):
-            a = random.choice(lista)
-            family = Hulks(a, screen, random.choice([boy_s, girl, kid]), 40)
-            lista.remove(a)
+            list_spheroids.append(spheroid)
             list_family.append(family)
+            list_hulks.append(hulks)
+            list_grunts.append(grunts)
+
         create = False
 
+    for x in list_spheroids:
+        x.locomotion()
+        x.draw()
+        list_enforcers = list_enforcers + x.enforcers()
+        x.control_enforcers()
+        if x.delete():
+            list_spheroids.remove(x)
+
+    for x in list_enforcers:
+        x.locomotion([boy.xp, boy.yp])
     for x in list_hulks:
         x.locomotion()
         x.draw()
+    for y in list_family:
+        y.locomotion()
+        y.draw()
+    
     for x in list_grunts:
         x.locomotion([boy.xp, boy.yp])
         x.draw()
-    for x in list_family:
-        x.locomotion()
-        x.draw()
+
 
     for b in bullets:
         b.move()
@@ -96,8 +107,6 @@ while game_loop:
             point += 1
             score.upload_score(point)
 
-    if len(list_grunts) == 0:
-        create = True
     arena.run()
     score.draw(screen)
     pygame.display.update()
