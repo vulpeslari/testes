@@ -1,4 +1,5 @@
 import pygame
+from sprites import *
 
 
 class Arena:
@@ -11,11 +12,15 @@ class Arena:
         self.aux = 4
 
     def run(self):
-        pygame.draw.rect(self.screen, (255, 123, 1), (110, 110, 40, 40))
-        pygame.draw.rect(self.screen, (self.red, 0, self.blue), (100, 100, 10, 620))
-        pygame.draw.rect(self.screen, (self.red, 0, self.blue), (1200, 100, 10, 620))
-        pygame.draw.rect(self.screen, (self.red, 0, self.blue), (100, 100, 1100, 10))
+        rect_list = []
+        pygame.draw.rect(self.screen, (self.red, 0, self.blue), (100, 100, 10, 610))
+        rect_list.append(pygame.Rect(100, 100, 10, 610))
+        pygame.draw.rect(self.screen, (self.red, 0, self.blue), (1190, 100, 10, 610))
+        rect_list.append(pygame.Rect(1190, 100, 10, 610))
+        pygame.draw.rect(self.screen, (self.red, 0, self.blue), (100, 100, 1090, 10))
+        rect_list.append(pygame.Rect(100, 100, 1090, 10))
         pygame.draw.rect(self.screen, (self.red, 0, self.blue), (100, 710, 1100, 10))
+        rect_list.append(pygame.Rect(100, 710, 1100, 10))
 
         self.blue += self.aux
         self.red -= self.aux
@@ -24,4 +29,6 @@ class Arena:
             self.blue = 1
         if self.red <= 0 or self.red >= 255:
             self.red = 255
+        return rect_list
+
 
